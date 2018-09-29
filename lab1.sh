@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #Laboratory work 1; 
 #Baranets
 
@@ -32,8 +32,8 @@ printCurrentDir() {
 
 changeDir() {
 	echo "Введите путь к каталогу"
-	read pathToDir
-	cd $pathToDir 2>&1 | tee -a logs.txt
+	read -r pathToDir
+	cd "$pathToDir"
 }
 
 printDirContent() {
@@ -43,16 +43,16 @@ printDirContent() {
 
 createLink() {
 	echo "Введите путь до файла"
-	read pathToFile
+	read -r pathToFile
 	echo "Введите имя для прямой ссылки"
-	read pathToLink			
-	ln $pathToFile $pathToLink 2>&1 | tee -a logs.txt 
+	read -r pathToLink			
+	ln "$pathToFile" "$pathToLink" 2>&1 | tee -a logs.txt 
 }
 
 deleteLink() {
 	echo "Введите название ссылки на файл"
-	read pathToLink
-	rm -r $pathToLink 2>&1 | tee -a logs.txt
+	read -r pathToLink
+	unlink "$pathToLink" 2>&1 | tee -a logs.txt
 }
 
 createLogFile
@@ -61,8 +61,8 @@ printMenu
 
 while :
 do
-	read inputIndex
-	case $inputIndex in
+	read key
+	case $key in
 		1)printCurrentDir;;
 		2)changeDir;;
 		3)printDirContent;;
@@ -71,6 +71,15 @@ do
 		6)
 			echo "Goodbye"
 			break;;
-		*)echo "Неверный индекс";;	
+		*)
+    		line="$key"
+    		printf -v key_code "%d" "'$key"
+    		if [ $key_code -eq 0 ]; then
+        		echo "Ctrl-D LOOL! Goodbye!"
+        		break
+        	else 
+        		echo "Неверный индекс"
+        	fi
+        	;;
 	esac
 done
