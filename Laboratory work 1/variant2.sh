@@ -1,14 +1,14 @@
 #!/bin/bash
 #Laboratory work 1; 
 #Baranets 
-#Variant 6
+#Variant 2
 
 #Массив хранящий в себе наименования команд
 systemCall=("Напечатать имя текущего католога" 
-						"Сменить текущий католог" 
 						"Напечатать содержание текущего католога" 
-						"Создать прямую ссылку на файл" 
-						"Удалить сиволическую ссылку на файл" 
+						"Создать каталог" 
+						"Сменить текущий католог" 
+						"Удалить каталог" 
 						"Выйти из программы")
 
 #Инициализируем переменную с расположением лог файлов
@@ -51,20 +51,19 @@ printDirContent() {
 	ls
 }
 
-#Запрашивает имя файла, после чего создает файл с указанным именем
-createLink() {
-	echo "Введите путь до файла"
-	read -r pathToFile
-	echo "Введите имя для прямой ссылки"
-	read -r pathToLink			
-	ln "$pathToFile" "$pathToLink" 2>&1 | tee -a "$SCRIPTLOGS"
+#Запрашивает имя каталога, после чего создает каталог с указанным именем
+createDir() {
+	echo "Введите имя каталога"
+	read -r nameFile		
+	mkdir "$nameFile" 2>&1 | tee -a "$SCRIPTLOGS"
 }
 
-#Запрашивает имя файла, после чего удаляет файл с указанным именем
-deleteLink() {
-	echo "Введите название ссылки на файл"
-	read -r pathToLink
-	unlink "$pathToLink" 2>&1 | tee -a "$SCRIPTLOGS"
+#Запрашивает имя каталога, после чего удаляет каталог с указанным именем
+deleteDir() {
+	echo "Введите имя каталога"
+	read -r nameFile
+	#Не удаляет не пустой каталог!
+	rmdir "$nameFile" 2>&1 | tee -a "$SCRIPTLOGS"
 }
 
 #Начало исполнения функциональной части скрипта
@@ -77,10 +76,10 @@ do
 	read key
 	case $key in
 		1)printCurrentDir;;
-		2)changeDir;;
-		3)printDirContent;;
-		4)createLink;;
-		5)deleteLink;;
+		2)printDirContent;;
+		3)createDir;;
+		4)changeDir;;
+		5)deleteDir;;
 		6)
 			echo "Goodbye"
 			break;;

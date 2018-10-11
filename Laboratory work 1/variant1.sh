@@ -1,14 +1,14 @@
 #!/bin/bash
 #Laboratory work 1; 
 #Baranets 
-#Variant 6
+#Variant 1
 
 #Массив хранящий в себе наименования команд
 systemCall=("Напечатать имя текущего католога" 
 						"Сменить текущий католог" 
 						"Напечатать содержание текущего католога" 
-						"Создать прямую ссылку на файл" 
-						"Удалить сиволическую ссылку на файл" 
+						"Создать файл" 
+						"Удалить файл" 
 						"Выйти из программы")
 
 #Инициализируем переменную с расположением лог файлов
@@ -52,19 +52,17 @@ printDirContent() {
 }
 
 #Запрашивает имя файла, после чего создает файл с указанным именем
-createLink() {
-	echo "Введите путь до файла"
-	read -r pathToFile
-	echo "Введите имя для прямой ссылки"
-	read -r pathToLink			
-	ln "$pathToFile" "$pathToLink" 2>&1 | tee -a "$SCRIPTLOGS"
+createFile() {
+	echo "Введите имя файла"
+	read -r nameFile		
+	touch "$nameFile"  2>&1 | tee -a "$SCRIPTLOGS"
 }
 
 #Запрашивает имя файла, после чего удаляет файл с указанным именем
-deleteLink() {
-	echo "Введите название ссылки на файл"
-	read -r pathToLink
-	unlink "$pathToLink" 2>&1 | tee -a "$SCRIPTLOGS"
+deleteFile() {
+	echo "Введите имя файла"
+	read -r nameFile		
+	rm "$nameFile"  2>&1 | tee -a "$SCRIPTLOGS"
 }
 
 #Начало исполнения функциональной части скрипта
@@ -79,8 +77,8 @@ do
 		1)printCurrentDir;;
 		2)changeDir;;
 		3)printDirContent;;
-		4)createLink;;
-		5)deleteLink;;
+		4)createFile;;
+		5)deleteFile;;
 		6)
 			echo "Goodbye"
 			break;;
