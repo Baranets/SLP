@@ -1,18 +1,19 @@
 #!/bin/bash
 #Laboratory work 1; 
 #Baranets 
-#Variant 1
+#Variant 3
 
 #Массив хранящий в себе наименования команд
 systemCall=("Напечатать имя текущего католога" 
-						"Сменить текущий католог" 
-						"Напечатать содержание текущего католога" 
 						"Создать файл" 
-						"Удалить файл" 
+						"Отменить доступ к файлу для всех остальных пользователей" 
+						"Отменить право на запись для владельца файла" 
+						"Переименовать файл" 
 						"Выйти из программы")
 
 #Инициализируем переменную с расположением лог файлов
 SCRIPTLOGS="$PWD/logs.txt"
+echo $SCRIPTLOGS
 
 #Создание лог файла в случее его отсутствия в каталоге со скриптом, иначе выводит сообщение о существовании такового файла
 createLogFile() {
@@ -38,31 +39,34 @@ printCurrentDir() {
 	pwd
 }
 
-#Запрашивает путь к каталогу, затем переходит в указанный каталог
-changeDir() {
-	echo "Введите путь к каталогу"
-	read -r pathToDir
-	cd "$pathToDir" 2>>"$SCRIPTLOGS" || echo "Переход в каталог \"$pathToDir\" не возможен">&2
-}
-
-#Выводит в консоль "Содержание текущего каталога"
-printDirContent() {
-	echo "Содержание текущего каталога"
-	ls
-}
-
-#Запрашивает имя файла, после чего создает файл с указанным именем
+#Создает файл с указанным именем
 createFile() {
 	echo "Введите имя файла"
-	read -r nameFile		
-	touch "$nameFile"  2>&1 | tee -a "$SCRIPTLOGS"
+	read -r nameFile
+	touch "$nameFile" 2>>"$SCRIPTLOGS" || echo "Неудалось создать файл \"$nameFile\"">&2
 }
 
-#Запрашивает имя файла, после чего удаляет файл с указанным именем
-deleteFile() {
+#Удаляет все права на файл у остальных пользователей
+deleteRootsOtherUsers() {
 	echo "Введите имя файла"
-	read -r nameFile		
-	rm "$nameFile"  2>&1 | tee -a "$SCRIPTLOGS"
+	read -r nameFile
+	chmod o-rwx "$nameFile" 2>&1 | tee -a "$SCRIPTLOGS"
+}
+
+#Удаляет право владельца файла на чтение
+deleteWriteRootUser() {
+	echo "Введите имя файла"
+	read -r nameFile
+	chmod u-w "$nameFile" 2>&1 | tee -a "$SCRIPTLOGS"
+}
+
+#Переименовывает указанный файл
+renameFile() {
+	echo "Введите текущее имя файла"
+	read -r oldNameFile
+		echo "Введите новое имя файла"
+	read -r newNameFile
+	mv "$oldNameFile" "$newNameFile" 2>&1 | tee -a "$SCRIPTLOGS"
 }
 
 #Начало исполнения функциональной части скрипта
@@ -75,10 +79,10 @@ do
 	read key
 	case $key in
 		1)printCurrentDir;;
-		2)changeDir;;
-		3)printDirContent;;
-		4)createFile;;
-		5)deleteFile;;
+		2)createFile;;
+		3)deleteRootsOtherUsers;;
+		4)deleteWriteRootUser;;
+		5)renameFile;;
 		6)
 			echo "Goodbye"
 			break;;
