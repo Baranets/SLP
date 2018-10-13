@@ -43,7 +43,7 @@ printCurrentDir() {
 changeDir() {
 	echo "Введите путь к каталогу"
 	read -r pathToDir
-	cd "$pathToDir" 2>>"$SCRIPTLOGS" || echo "Переход в каталог \"$pathToDir\" не возможен">&2
+	eval "cd $pathToDir 2>>\"$SCRIPTLOGS\" || echo Переход в каталог \"$pathToDir\" не возможен>&2"
 }
 
 #Выводит в консоль пользователей имеющих хотя бы один процесс
@@ -56,7 +56,7 @@ showUsersProcess() {
 createFile() {
 	echo "Введите имя файла"
 	read -r nameFile
-	touch "$nameFile" 2>>"$SCRIPTLOGS" || echo "Неудалось создать файл \"$nameFile\"">&2
+	eval "touch $nameFile 2>>\"$SCRIPTLOGS\" || echo Неудалось создать файл \"$nameFile\">&2"
 }
 
 #Удаляет право владельца файла на чтение
@@ -65,7 +65,7 @@ copyFile() {
 	read -r nameFile
 	echo "Введите целевой каталог"
 	read -r destinationPath
-	cp "$nameFile" "$destinationPath" 2>&1 | tee -a "$SCRIPTLOGS"
+	eval "cp $nameFile $destinationPath 2>&1 | tee -a \"$SCRIPTLOGS\""
 }
 
 #Начало исполнения функциональной части скрипта
@@ -75,7 +75,10 @@ printMenu
 
 while :
 do
-	read key
+	
+	read -n 1 key
+	echo
+
 	case $key in
 		1)printCurrentDir;;
 		2)changeDir;;
@@ -87,14 +90,16 @@ do
 			break;;
 		*)
 			#Обработка события с неуказанным в case индексом с проверкой на ввод сочетания клавишь Ctrl-D
-    		line="$key"
-    		printf -v key_code "%d" "'$key"
-    		if [ $key_code -eq 0 ]; then
-        		echo "Ctrl-D LOOL! Goodbye!"
+    		line=$line$key
+   			printf -v key_code "%d" "'$key"
+    		if [ $key_code -eq 4 ]; then
+        		echo "Ctrl-D pressed!"
         		break
-        	else 
-        		echo "Неверный индекс"
-        	fi
-        	;;
+    		fi
+    		if [ $key_code -eq 0 ]; then
+    			printMenu
+    		else     			
+    			echo "Не верный индекс"
+    		fi;;
 	esac
 done

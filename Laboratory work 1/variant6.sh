@@ -42,7 +42,7 @@ printCurrentDir() {
 changeDir() {
 	echo "Введите путь к каталогу"
 	read -r pathToDir
-	cd "$pathToDir" 2>>"$SCRIPTLOGS" || echo "Переход в каталог \"$pathToDir\" не возможен">&2
+	eval "cd $pathToDir 2>>\"$SCRIPTLOGS\" || echo Переход в каталог \"$pathToDir\" не возможен>&2"
 }
 
 #Выводит в консоль "Содержание текущего каталога"
@@ -57,14 +57,14 @@ createLink() {
 	read -r pathToFile
 	echo "Введите имя для прямой ссылки"
 	read -r pathToLink			
-	ln "$pathToFile" "$pathToLink" 2>&1 | tee -a "$SCRIPTLOGS"
+	eval "ln $pathToFile $pathToLink 2>&1 | tee -a \"$SCRIPTLOGS\""
 }
 
 #Запрашивает имя файла, после чего удаляет файл с указанным именем
 deleteLink() {
 	echo "Введите название ссылки на файл"
 	read -r pathToLink
-	unlink "$pathToLink" 2>&1 | tee -a "$SCRIPTLOGS"
+	eval "unlink $pathToLink 2>&1 | tee -a \"$SCRIPTLOGS\""
 }
 
 #Начало исполнения функциональной части скрипта
@@ -74,7 +74,9 @@ printMenu
 
 while :
 do
-	read key
+	read -n 1 key
+	echo
+	
 	case $key in
 		1)printCurrentDir;;
 		2)changeDir;;
@@ -86,14 +88,16 @@ do
 			break;;
 		*)
 			#Обработка события с неуказанным в case индексом с проверкой на ввод сочетания клавишь Ctrl-D
-    		line="$key"
-    		printf -v key_code "%d" "'$key"
-    		if [ $key_code -eq 0 ]; then
-        		echo "Ctrl-D LOOL! Goodbye!"
+    		line=$line$key
+   			printf -v key_code "%d" "'$key"
+    		if [ $key_code -eq 4 ]; then
+        		echo "Ctrl-D pressed!"
         		break
-        	else 
-        		echo "Неверный индекс"
-        	fi
-        	;;
+    		fi
+    		if [ $key_code -eq 0 ]; then
+    			printMenu
+    		else     			
+    			echo "Не верный индекс"
+    		fi;;
 	esac
 done
