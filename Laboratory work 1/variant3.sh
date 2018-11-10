@@ -3,7 +3,7 @@
 #Baranets 
 #Variant 3
 
-#Массив хранящий в себе наименования команд
+#[EN]Array with names of functionality /[RU]Массив хранящий в себе наименования команд
 systemCall=("Напечатать имя текущего католога" 
 						"Создать файл" 
 						"Отменить доступ к файлу для всех остальных пользователей" 
@@ -11,11 +11,12 @@ systemCall=("Напечатать имя текущего католога"
 						"Переименовать файл" 
 						"Выйти из программы")
 
-#Инициализируем переменную с расположением лог файлов
+#[EN]Initialize variable with path to log file /[RU]Инициализируем переменную с расположением лог файлов
 SCRIPTLOGS="$PWD/logs.txt"
 echo $SCRIPTLOGS
 
-#Создание лог файла в случее его отсутствия в каталоге со скриптом, иначе выводит сообщение о существовании такового файла
+#[EN]Create log file if he doesn't exist, else print information about existing of the file 
+#[RU]Создание лог файла в случее его отсутствия в каталоге со скриптом, иначе выводит сообщение о существовании такового файла
 createLogFile() {
 	if test -f "$SCRIPTLOGS"; then
 		echo "Log file is exist"
@@ -24,7 +25,7 @@ createLogFile() {
 	fi 
 }
 
-#Выводит в консоль "Главное меню"
+#[EN]Print to console "Main Menu" /[RU]Выводит в консоль "Главное меню"
 printMenu() {
 	for i in ${!systemCall[*]}
 	do
@@ -33,34 +34,34 @@ printMenu() {
 	done
 }
 
-#Выводит в консоль "Текущий каталог"
+#[EN]Print to console "Current directory" /[RU]Выводит в консоль "Текущий каталог"
 printCurrentDir() {
 	echo "Текущий каталог: "
 	pwd
 }
 
-#Создает файл с указанным именем
+#[EN]Take name of file, then create file /[RU]Запрашивает имя файла, после чего создает файл с указанным именем
 createFile() {
 	echo "Введите имя файла"
 	read -r nameFile
 	eval "touch $nameFile 2>>\"$SCRIPTLOGS\" || echo Неудалось создать файл \"$nameFile\">&2"
 }
 
-#Удаляет все права на файл у остальных пользователей
+#[EN]Remove the rights to the file for Other Users /[RU]Удаляет все права на файл у остальных пользователей
 deleteRootsOtherUsers() {
 	echo "Введите имя файла"
 	read -r nameFile
 	eval "chmod o-rwx $nameFile 2>&1 | tee -a \"$SCRIPTLOGS\""
 }
 
-#Удаляет право владельца файла на чтение
+#[EN]Remove the right to read the file for User /[RU]Удаляет право владельца файла на чтение
 deleteWriteRootUser() {
 	echo "Введите имя файла"
 	read -r nameFile
 	eval "chmod u-w $nameFile 2>&1 | tee -a \"$SCRIPTLOGS\""
 }
 
-#Переименовывает указанный файл
+#[EN]Rename the file /[RU]Переименовывает указанный файл
 renameFile() {
 	echo "Введите текущее имя файла"
 	read -r oldNameFile
@@ -69,7 +70,7 @@ renameFile() {
 	eval "mv $oldNameFile $newNameFile 2>&1 | tee -a \"$SCRIPTLOGS\""
 }
 
-#Начало исполнения функциональной части скрипта
+#[EN]The begin of the functional part of the script /[RU]Начало исполнения функциональной части скрипта
 createLogFile
 
 printMenu
@@ -90,7 +91,8 @@ do
 			echo "Goodbye"
 			break;;
 		*)
-			#Обработка события с неуказанным в case индексом с проверкой на ввод сочетания клавишь Ctrl-D
+			#[EN]Handling an event with an unspecified index in a case and checking for a keystroke by pressing Ctrl-D
+			#[RU]Обработка события с неуказанным в case индексом с проверкой на ввод сочетания клавишь Ctrl-D
     		line=$line$key
    			printf -v key_code "%d" "'$key"
     		if [ $key_code -eq 4 ]; then

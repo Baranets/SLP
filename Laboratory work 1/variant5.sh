@@ -1,14 +1,14 @@
 #!/bin/bash
 #Laboratory work 1; 
 #Baranets 
-#Variant 2
+#Variant 5
 
 #[EN]Array with names of functionality /[RU]Массив хранящий в себе наименования команд
 systemCall=("Напечатать имя текущего католога" 
-						"Напечатать содержание текущего католога" 
-						"Создать каталог" 
-						"Сменить текущий католог" 
-						"Удалить каталог" 
+						"Напечатать содержимое текущего каталога" 
+						"Вывести текущую дату и время в формате Wed Feb 2 01:01 MSK 2015" 
+						"Вывести содержимое файла на экран" 
+						"Удалить файл" 
 						"Выйти из программы")
 
 #[EN]Initialize variable with path to log file /[RU]Инициализируем переменную с расположением лог файлов
@@ -39,32 +39,30 @@ printCurrentDir() {
 	pwd
 }
 
-#[EN]Go to Directory /[RU]Запрашивает путь к каталогу, затем переходит в указанный каталог
-changeDir() {
-	echo "Введите путь к каталогу"
-	read -r pathToDir
-	eval "cd $pathToDir 2>>\"$SCRIPTLOGS\" || echo Переход в каталог \"$pathToDir\" не возможен>&2"
-}
-
 #[EN]Print to console "Current directory content" /[RU]Выводит в консоль "Содержание текущего каталога"
 printDirContent() {
 	echo "Содержание текущего каталога"
 	ls
 }
 
-#[EN]Take name of directory, then create directory /[RU]Запрашивает имя директории, после чего создает директорию с указанным именем
-createDir() {
-	echo "Введите имя каталога"
-	read -r nameFile		
-	eval "mkdir $nameFile 2>&1 | tee -a \"$SCRIPTLOGS\""
+#[EN]Print to console "Current formatted date" /[RU]Выводит в консоль "Текущую форматированную дату"
+currentDatePrint() {
+	echo "Current date is "
+	date '+%a %b %e %H:%M %Z %Y'
 }
 
-#[EN]Take name of directory, then create directory /[RU]Запрашивает имя директории, после чего создает директорию с указанным именем
-deleteDir() {
-	echo "Введите имя каталога"
-	read -r nameFile
-	#Не удаляет не пустой каталог!
-	eval "rmdir $nameFile 2>&1 | tee -a \"$SCRIPTLOGS\""
+#[EN]Print to console content in file /[RU]Выводит в консоль содержимое файла
+printFile() {
+	echo "Введите путь до файла"
+	read -r pathToFile		
+	eval "cat $pathToFile 2>&1 | tee -a \"$SCRIPTLOGS\""
+}
+
+#[EN]Take name of file, then delete file /[RU]Запрашивает имя файла, после чего удаляет файл с указанным именем
+deleteFile() {
+	echo "Введите название файла"
+	read -r pathToLink
+	eval "rm $pathToLink 2>&1 | tee -a \"$SCRIPTLOGS\""
 }
 
 #[EN]The begin of the functional part of the script /[RU]Начало исполнения функциональной части скрипта
@@ -75,12 +73,14 @@ printMenu
 while :
 do
 	read -n 1 key
+	echo
+	
 	case $key in
 		1)printCurrentDir;;
 		2)printDirContent;;
-		3)createDir;;
-		4)changeDir;;
-		5)deleteDir;;
+		3)currentDatePrint;;
+		4)printFile;;
+		5)deleteFile;;
 		6)
 			echo "Goodbye"
 			break;;
@@ -97,7 +97,6 @@ do
     			printMenu
     		else     			
     			echo "Не верный индекс"
-    		fi
-        	;;
+    		fi;;
 	esac
 done
