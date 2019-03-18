@@ -1,0 +1,4 @@
+/home/alyona/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.5153.40/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/alyona/ITMO/Сем5/ОСП/lab4
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/alyona/ITMO/Сем5/ОСП/lab4/cmake-build-debug

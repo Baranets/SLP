@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra -Werror --std=gnu99 -pedantic  -g   CMakeFiles/xargs.dir/xargs/xargs.c.o  -o xargs 

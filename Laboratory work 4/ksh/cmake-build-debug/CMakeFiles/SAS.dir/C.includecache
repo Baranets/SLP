@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/alyona/ITMO/Сем5/ОСП/lab4/Немое/builtin.c
+unistd.h
+-
+sys/types.h
+-
+signal.h
+-
+stdlib.h
+-
+string.h
+/home/alyona/ITMO/Сем5/ОСП/lab4/Немое/string.h
+defs.h
+/home/alyona/ITMO/Сем5/ОСП/lab4/Немое/defs.h
+
+/home/alyona/ITMO/Сем5/ОСП/lab4/Немое/defs.h
+unistd.h
+-
+sys/types.h
+-
+termios.h
+-
+sys/types.h
+-
+

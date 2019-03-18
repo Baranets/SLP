@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra --std=gnu99 -pedantic  -g   CMakeFiles/lab4-not-mine.dir/Немое/builtin.c.o CMakeFiles/lab4-not-mine.dir/Немое/sh.c.o CMakeFiles/lab4-not-mine.dir/Немое/io.c.o CMakeFiles/lab4-not-mine.dir/Немое/line_parser.c.o CMakeFiles/lab4-not-mine.dir/Немое/var.c.o  -o lab4-not-mine 

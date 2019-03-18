@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra -Werror --std=gnu99 -pedantic  -g   CMakeFiles/lab4.dir/builtins.c.o CMakeFiles/lab4.dir/sh.c.o CMakeFiles/lab4.dir/io.c.o CMakeFiles/lab4.dir/line_parser.c.o CMakeFiles/lab4.dir/variables.c.o  -o lab4 

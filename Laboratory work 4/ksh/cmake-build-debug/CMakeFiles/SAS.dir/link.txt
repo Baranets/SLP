@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra --std=gnu99 -pedantic  -g   CMakeFiles/SAS.dir/Немое/builtin.c.o CMakeFiles/SAS.dir/Немое/sh.c.o CMakeFiles/SAS.dir/Немое/io.c.o CMakeFiles/SAS.dir/Немое/line_parser.c.o CMakeFiles/SAS.dir/Немое/var.c.o  -o SAS 
